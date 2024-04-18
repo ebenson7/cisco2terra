@@ -31,7 +31,7 @@ func getConfig() *Config {
 
 	//TODO error checking for Meraki API key. Currently fails out from flag.Parse if empty. We want to look for it and then fail if we can't find it.
 	if merakiAPIKey == nil {
-		fmt.Println("Missing Meraki API Key. Checking OS env variable...")
+		log.Println("Missing Meraki API Key. Checking OS env variable...")
 		if os.Getenv("MERAKI_DASHBOARD_API_KEY") == "" {
 			log.Fatal("Unable to find Meraki API key.")
 		} else {
