@@ -27,12 +27,8 @@ func getConfig() *Config {
 	organizationID := flag.String("org-id", "", "Defines Organizational ID used to create Infrastructure")
 	flag.Parse()
 
-	switch {
-	case inputPath == nil:
-		log.Fatal("Input path is empty. Please try again.")
-	case outputPath == nil:
-		log.Fatal("Ouput path is empty. Please try again.")
-	case merakiAPIKey == nil:
+	//TODO error checking for Meraki API key. Currently fails out from flag.Parse if empty. We want to look for it and then fail if we can't find it.
+	if merakiAPIKey == nil {
 		fmt.Println("Missing Meraki API Key. Checking OS env variable...")
 		if os.Getenv("MERAKI_DASHBOARD_API_KEY") == "" {
 			log.Fatal("Unable to find Meraki API key.")
@@ -77,4 +73,6 @@ func main() {
 
 	GenerateNetworObjectskHCL(config.organizationID, config.inputPath)
 	defer fmt.Printf("%s", hclOutput.Bytes())
+	config2 := getConfig()
+	fmt.Println(config, config2)
 }
