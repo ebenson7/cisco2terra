@@ -10,8 +10,10 @@ import (
 	"github.com/zclconf/go-cty/cty"
 )
 
-var hclOutput = hclwrite.NewEmptyFile()
-var rootBody = hclOutput.Body()
+var (
+	hclOutput = hclwrite.NewEmptyFile()
+	rootBody = hclOutput.Body()
+)
 
 type Config struct {
 	inputPath      string
@@ -73,6 +75,4 @@ func main() {
 
 	GenerateNetworObjectskHCL(config.organizationID, config.inputPath)
 	defer fmt.Printf("%s", hclOutput.Bytes())
-	config2 := getConfig()
-	fmt.Println(config, config2)
 }

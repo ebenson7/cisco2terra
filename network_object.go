@@ -17,17 +17,19 @@ type ObjectNetwork struct {
 }
 
 func getNetworkObject(path string) {
+	var MaskStr string
+	
 	parsedObjects := parseFile(path, "object network")
 
 	//Using regex to pick up any things like obj_ or obj-. Without it, it'll drop them.
 	networkObjectRegex := regexp.MustCompile(`^object network`)
 
-	var MaskStr string
 	for _, slices := range parsedObjects {
 		objectNetworkName := strings.TrimSpace(networkObjectRegex.ReplaceAllString(slices[0], ""))
 		objectHostName := strings.Split(strings.TrimSpace(slices[1]), " ")
 		hostName := objectHostName[1]
 
+		//TODO Figure out what to do for nat blocks inside object network blocks
 		if strings.Contains(objectHostName[0], "subnet") {
 			MaskStr = objectHostName[2]
 		} else {
@@ -55,5 +57,6 @@ func GenerateNetworObjectskHCL(organization_id string, path string) {
 		netObjBody.SetAttributeValue("ip", cty.StringVal(obj.host))
 		netObjBody.SetAttributeValue("mask", cty.StringVal(obj.mask))
 		netObjBody.SetAttributeValue("type", cty.StringVal("ipAndMask"))
+		rootBody.AppendNewline()
 	}
 }
